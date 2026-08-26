@@ -364,6 +364,52 @@
             font-size: 0.85rem;
             color: #666;
         }
+        .summary-panel {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed var(--border);
+        }
+        .summary-question {
+            margin-bottom: 18px;
+        }
+        .summary-question-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        .summary-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        .summary-label {
+            min-width: 140px;
+            max-width: 240px;
+        }
+        .summary-bar-track {
+            flex-grow: 1;
+            background: #e9ecef;
+            border-radius: 4px;
+            height: 14px;
+            overflow: hidden;
+        }
+        .summary-bar-fill {
+            background: var(--accent);
+            height: 100%;
+        }
+        .summary-winner .summary-bar-fill {
+            background: var(--primary);
+        }
+        .summary-winner .summary-label {
+            font-weight: bold;
+        }
+        .summary-count {
+            min-width: 80px;
+            text-align: right;
+            color: #666;
+        }
         body.admin-mode .admin-q-title-input,
         body.admin-mode .admin-q-desc-input,
         body.admin-mode .admin-card-controls,
@@ -474,6 +520,12 @@
     /* ===================================================================== */
 
     let questionCounter = 1;
+
+    function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function (c) {
+            return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+        });
+    }
 
     async function sha256Hex(text) {
         const enc = new TextEncoder().encode(text);
@@ -704,11 +756,53 @@
             submitBtn.textContent = testoOriginale;
         }
     }
+    // Costruisce il riepilogo "quale risposta sta vincendo" per ogni domanda
+    // a scelta (le domande a testo libero, dove quasi tutte le risposte sono
+    // diverse tra loro, vengono saltate perché un conteggio non avrebbe senso).
+    function buildSummaryHtml(responses) {
+        if (!responses || responses.length === 0) return '';
+        const keys = Object.keys(responses[0]).filter(k => k !== 'dataOra');
+        let html = '<div class="summary-panel"><h3>🏆 Riepilogo per domanda</h3>';
+        let anySummary = false;
+
+        keys.forEach(k => {
+            const values = responses.map(r => r[k]).filter(v => v !== undefined && v !== null && v !== '');
+            if (values.length === 0) return;
+            const uniqueValues = new Set(values);
+            // Salta le domande a risposta libera (praticamente tutte diverse tra loro)
+            if (values.length > 2 && uniqueValues.size === values.length) return;
+
+            anySummary = true;
+            const counts = {};
+            values.forEach(v => { counts[v] = (counts[v] || 0) + 1; });
+            const total = values.length;
+            const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+            const maxCount = sorted[0][1];
+
+            html += `<div class="summary-question"><div class="summary-question-title">${escapeHtml(k)}</div>`;
+            sorted.forEach(([val, count]) => {
+                const pct = Math.round((count / total) * 100);
+                const isWinner = count === maxCount;
+                html += `
+                    <div class="summary-row ${isWinner ? 'summary-winner' : ''}">
+                        <span class="summary-label">${isWinner ? '🏆 ' : ''}${escapeHtml(val)}</span>
+                        <div class="summary-bar-track"><div class="summary-bar-fill" style="width:${pct}%"></div></div>
+                        <span class="summary-count">${count} vot${count === 1 ? 'o' : 'i'} (${pct}%)</span>
+                    </div>`;
+            });
+            html += '</div>';
+        });
+
+        html += '</div>';
+        return anySummary ? html : '';
+    }
+
     async function loadResponsesToTable() {
         const container = document.getElementById('responsesTableContainer');
         container.innerHTML = '<p>Caricamento risposte dal Google Sheet...</p>';
 
         let savedResponses = null;
+        let warningHtml = '';
 
         if (APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('INCOLLA_QUI') !== 0) {
             try {
@@ -725,33 +819,32 @@
         if (!savedResponses) {
             savedResponses = JSON.parse(localStorage.getItem('fanta_responses') || '[]');
             if (savedResponses.length > 0) {
-                container.innerHTML = '<p style="color:#d90429;">Impossibile leggere il Google Sheet ora: mostro solo la copia locale di questo browser (potrebbe non includere le risposte dei tuoi amici).</p>';
+                warningHtml = '<p style="color:#d90429;">Impossibile leggere il Google Sheet ora: mostro solo la copia locale di questo browser (potrebbe non includere le risposte dei tuoi amici).</p>';
             }
         }
 
         if (!savedResponses || savedResponses.length === 0) {
-            container.innerHTML += '<p>Nessuna risposta ricevuta finora.</p>';
+            container.innerHTML = warningHtml + '<p>Nessuna risposta ricevuta finora.</p>';
             return;
         }
+
+        const summaryHtml = buildSummaryHtml(savedResponses);
 
         // Prendi tutte le chiavi uniche (domande)
         let html = '<div style="overflow-x:auto;"><table class="response-table"><thead><tr><th>Data/Ora</th>';
         const sampleKeys = Object.keys(savedResponses[0]).filter(k => k !== 'dataOra');
-        sampleKeys.forEach(k => { html += `<th>${k}</th>`; });
+        sampleKeys.forEach(k => { html += `<th>${escapeHtml(k)}</th>`; });
         html += '</tr></thead><tbody>';
         savedResponses.forEach(resp => {
-            html += `<tr><td><b>${resp.dataOra || '-'}</b></td>`;
+            html += `<tr><td><b>${escapeHtml(resp.dataOra || '-')}</b></td>`;
             sampleKeys.forEach(k => {
-                html += `<td>${resp[k] || '-'}</td>`;
+                html += `<td>${escapeHtml(resp[k] || '-')}</td>`;
             });
             html += '</tr>';
         });
         html += '</tbody></table></div>';
-        if (container.innerHTML.indexOf('Impossibile leggere') === -1) {
-            container.innerHTML = html;
-        } else {
-            container.innerHTML += html;
-        }
+
+        container.innerHTML = warningHtml + summaryHtml + html;
     }
     function clearResponses() {
         if (confirm("Vuoi davvero cancellare la copia locale delle risposte salvate in questo browser?")) {
