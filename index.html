@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="it">
-<head>
+<html lang="it"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creatore Sondaggio Fantacalcio - Admin & Compilazione</title>
+    <title>Creatore Sondaggio Fantacalcio - Admin &amp; Compilazione</title>
     <style>
         :root {
             --primary: #1b4332;
@@ -446,46 +445,774 @@
     </style>
 </head>
 <!-- Di default si apre SEMPRE in vista partecipante: la modalità admin va sbloccata (vedi script in fondo) -->
-<body>
+<body class="">
 <div class="container">
     <div class="mode-switcher" id="modeSwitcher" style="display:none;">
-        <span>⚙️ Modalità attiva: <strong id="modeStatusText">Partecipante (Compilazione Sondaggio)</strong></span>
+        <span>⚙️ Modalità attiva: <strong id="modeStatusText">Admin (Creatore Modulo)</strong></span>
         <div class="mode-buttons">
-            <button id="btnAdmin" onclick="requestAdminMode()">Modalità Admin 🔒</button>
-            <button id="btnUser" class="active" onclick="setMode('user')">Vista Utente (Compila)</button>
+            <button id="btnAdmin" onclick="requestAdminMode()" class="active">Modalità Admin 🔒</button>
+            <button id="btnUser" class="" onclick="setMode('user')">Vista Utente (Compila)</button>
         </div>
     </div>
     <header>
-        <input type="text" class="admin-header-edit" id="adminMainTitle" value="⚽ Sondaggio Fantacalcio" oninput="syncHeader()">
+        <input type="text" class="admin-header-edit" id="adminMainTitle" value="⚽ Sondaggio Pace Ar Cazzo 7.0" oninput="syncHeader()">
         <input type="text" class="admin-desc-edit" id="adminMainDesc" value="Esprimi le tue preferenze per definire le regole della nuova stagione" oninput="syncHeader()">
 
-        <h1 id="userMainTitle">⚽ Sondaggio Fantacalcio</h1>
+        <h1 id="userMainTitle">⚽ Sondaggio Pace Ar Cazzo 7.0</h1>
         <p id="userMainDesc">Esprimi le tue preferenze per definire le regole della nuova stagione</p>
     </header>
     <form id="fantaForm" onsubmit="handleFormSubmit(event)">
         <div id="formBuilderContainer">
             <div class="section-block" data-section-id="1">
                 <div class="section-title-bar">
-                    <span class="user-section-title">Sezione 1: Informazioni e Regole</span>
-                    <input type="text" class="admin-section-edit" value="Sezione 1: Informazioni e Regole" oninput="syncSectionTitle(this)">
+                    <span class="user-section-title">Sezione 1: Conferma o Modifica delle "Vecchie" Regole, Se verranno confermate le vecchie regole verranno utilizzate quelle, se vincerà la modifiche delle regole passate quelle da modificare verranno discusse e votate in sede d'asta</span>
+                    <input type="text" class="admin-section-edit" value="Sezione 1: Conferma o Modifica delle &quot;Vecchie&quot; Regole, Se verranno confermate le vecchie regole verranno utilizzate quelle, se vincerà la modifiche delle regole passate quelle da modificare verranno discusse e votate in sede d'asta" oninput="syncSectionTitle(this)">
                 </div>
-                <div class="question-card" data-q-type="text">
-                    <input type="text" class="admin-q-title-input" value="1. Il tuo nome / Nome squadra" oninput="syncQTitle(this)">
-                    <div class="question-title user-view-title">1. Il tuo nome / Nome squadra</div>
-
-                    <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione (opzionale)..." oninput="syncQDesc(this)">
-                    <div class="question-desc user-view-desc" style="display:none;"></div>
-                    <input type="text" class="user-text-input" name="q_1" placeholder="Inserisci qui il tuo nome..." required>
-
-                    <div class="admin-card-controls">
-                        <div class="admin-card-controls-left">
-                            <label><input type="checkbox" class="chk-required" checked onchange="toggleRequired(this)"> Obbligatoria</label>
-                        </div>
-                        <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+                
+            <div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="1. Partecipante" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">1. Partecipante</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="2">
+                    <div class="option-row">
+                        <input type="radio" name="q_2" value="Valerio">
+                        <span class="option-label"><span class="opt-text">Valerio</span></span>
+                        <input type="text" class="admin-opt-input" value="Valerio" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
                     </div>
+                <div class="option-row">
+            <input type="radio" name="q_2" value="Riccardo">
+            <span class="option-label"><span class="opt-text">Riccardo</span></span>
+            <input type="text" class="admin-opt-input" value="Riccardo" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div><div class="option-row">
+            <input type="radio" name="q_2" value="Gabriel">
+            <span class="option-label"><span class="opt-text">Gabriel</span></span>
+            <input type="text" class="admin-opt-input" value="Gabriel" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div><div class="option-row">
+            <input type="radio" name="q_2" value="Leo">
+            <span class="option-label"><span class="opt-text">Leo</span></span>
+            <input type="text" class="admin-opt-input" value="Leo" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div><div class="option-row">
+            <input type="radio" name="q_2" value="Trippo">
+            <span class="option-label"><span class="opt-text">Trippo</span></span>
+            <input type="text" class="admin-opt-input" value="Trippo" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div><div class="option-row">
+            <input type="radio" name="q_2" value="Grinta">
+            <span class="option-label"><span class="opt-text">Grinta</span></span>
+            <input type="text" class="admin-opt-input" value="Grinta" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div><div class="option-row">
+            <input type="radio" name="q_2" value="Baldo">
+            <span class="option-label"><span class="opt-text">Baldo</span></span>
+            <input type="text" class="admin-opt-input" value="Baldo" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div><div class="option-row">
+            <input type="radio" name="q_2" value="Nikto">
+            <span class="option-label"><span class="opt-text">Nikto</span></span>
+            <input type="text" class="admin-opt-input" value="Nikto" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
                 </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
             </div>
-        </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="2. Budget Crediti Iniziale " oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">2. Budget Crediti Iniziale </div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="3">
+                    <div class="option-row">
+                        <input type="radio" name="q_3" value="500">
+                        <span class="option-label"><span class="opt-text">500</span></span>
+                        <input type="text" class="admin-opt-input" value="500" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_3" value="Voglio Modificare">
+            <span class="option-label"><span class="opt-text">Voglio Modificare</span></span>
+            <input type="text" class="admin-opt-input" value="Voglio Modificare" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="3. Quota di partecipazione Campionato" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">3. Quota di partecipazione Campionato</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="4">
+                    <div class="option-row">
+                        <input type="radio" name="q_4" value="55 €">
+                        <span class="option-label"><span class="opt-text">55 €</span></span>
+                        <input type="text" class="admin-opt-input" value="55 €" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_4" value="Nuova proposta">
+            <span class="option-label"><span class="opt-text">Nuova proposta</span></span>
+            <input type="text" class="admin-opt-input" value="Nuova proposta" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="4. Quota di partecipazione Coppa" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">4. Quota di partecipazione Coppa</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="5">
+                    <div class="option-row">
+                        <input type="radio" name="q_5" value="15 €">
+                        <span class="option-label"><span class="opt-text">15 €</span></span>
+                        <input type="text" class="admin-opt-input" value="15 €" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_5" value="Nuova proposta">
+            <span class="option-label"><span class="opt-text">Nuova proposta</span></span>
+            <input type="text" class="admin-opt-input" value="Nuova proposta" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="5. Ripartizione premi (Campionato e Coppa)" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">5. Ripartizione premi (Campionato e Coppa)</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="6">
+                    <div class="option-row">
+                        <input type="radio" name="q_6" value="Conferma (Campionato: 275€/110€/55€ - Coppa: 105€/15€)">
+                        <span class="option-label"><span class="opt-text">Conferma (Campionato: 275€/110€/55€ - Coppa: 105€/15€)</span></span>
+                        <input type="text" class="admin-opt-input" value="Conferma (Campionato: 275€/110€/55€ - Coppa: 105€/15€)" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_6" value="Nuova Ripartizione">
+            <span class="option-label"><span class="opt-text">Nuova Ripartizione</span></span>
+            <input type="text" class="admin-opt-input" value="Nuova Ripartizione" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="6. Multe e penalità" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">6. Multe e penalità</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="La precedente regola prevedeva una multa di 5€ per ogni formazione non messa a partire dalla 4 formazione non messa in poi, La formazione in ogni caso se non inserita veniva recuperata dal sistema prendendo la formazione della giornata precedente ">
+            <div class="question-desc user-view-desc" style="display: block;">La precedente regola prevedeva una multa di 5€ per ogni formazione non messa a partire dalla 4 formazione non messa in poi, La formazione in ogni caso se non inserita veniva recuperata dal sistema prendendo la formazione della giornata precedente </div>
+        
+                <div class="options-container" data-qid="7">
+                    <div class="option-row">
+                        <input type="radio" name="q_7" value="Conferma sistema precedente">
+                        <span class="option-label"><span class="opt-text">Conferma sistema precedente</span></span>
+                        <input type="text" class="admin-opt-input" value="Conferma sistema precedente" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_7" value="Rivedi Sistema Sanzioni">
+            <span class="option-label"><span class="opt-text">Rivedi Sistema Sanzioni</span></span>
+            <input type="text" class="admin-opt-input" value="Rivedi Sistema Sanzioni" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="7. Numero di slot in rosa" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">7. Numero di slot in rosa</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="La precedente regola prevedeva: 3 POR, 9 DIF, 9 CEN, 7 ATT, per un totale di 28 Slot">
+            <div class="question-desc user-view-desc" style="display: block;">La precedente regola prevedeva: 3 POR, 9 DIF, 9 CEN, 7 ATT, per un totale di 28 Slot</div>
+        
+                <div class="options-container" data-qid="8">
+                    <div class="option-row">
+                        <input type="radio" name="q_8" value="Conferma Regola precedente">
+                        <span class="option-label"><span class="opt-text">Conferma Regola precedente</span></span>
+                        <input type="text" class="admin-opt-input" value="Conferma Regola precedente" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_8" value="Voglio cambiare la regola">
+            <span class="option-label"><span class="opt-text">Voglio cambiare la regola</span></span>
+            <input type="text" class="admin-opt-input" value="Voglio cambiare la regola" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="8. Modificatore difesa" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">8. Modificatore difesa</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="La regola lo scorso anno prevedeva un modificatore di difesa dinamico a 6 fasce (+1,+2,+3,+4,+5,+6)">
+            <div class="question-desc user-view-desc" style="display: block;">La regola lo scorso anno prevedeva un modificatore di difesa dinamico a 6 fasce (+1,+2,+3,+4,+5,+6)</div>
+        
+                <div class="options-container" data-qid="9">
+                    <div class="option-row">
+                        <input type="radio" name="q_9" value="Conferma Regola precedente">
+                        <span class="option-label"><span class="opt-text">Conferma Regola precedente</span></span>
+                        <input type="text" class="admin-opt-input" value="Conferma Regola precedente" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_9" value="Cambia Regola (sia per cambiare modificatore che per eliminare modificatore)">
+            <span class="option-label"><span class="opt-text">Cambia Regola (sia per cambiare modificatore che per eliminare modificatore)</span></span>
+            <input type="text" class="admin-opt-input" value="Cambia Regola (sia per cambiare modificatore che per eliminare modificatore)" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="9. Bonus Capitano" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">9. Bonus Capitano</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="La regola lo scorso anno prevedeva il bonus +1 al capitano designato nel caso in cui quest'ultimo avesse preso un voto maggiore o uguale a 6,5 e prevedeva un malus di -1 nel caso in cui il giocatore designato avesse preo un foto inferiore o uguale a 5,5">
+            <div class="question-desc user-view-desc" style="display: block;">La regola lo scorso anno prevedeva il bonus +1 al capitano designato nel caso in cui quest'ultimo avesse preso un voto maggiore o uguale a 6,5 e prevedeva un malus di -1 nel caso in cui il giocatore designato avesse preo un foto inferiore o uguale a 5,5</div>
+        
+                <div class="options-container" data-qid="10">
+                    <div class="option-row">
+                        <input type="radio" name="q_10" value="Conferma Regola Precedente">
+                        <span class="option-label"><span class="opt-text">Conferma Regola Precedente</span></span>
+                        <input type="text" class="admin-opt-input" value="Conferma Regola Precedente" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_10" value="Modifica regola precedente">
+            <span class="option-label"><span class="opt-text">Modifica regola precedente</span></span>
+            <input type="text" class="admin-opt-input" value="Modifica regola precedente" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="10. Switch e Cambio Modulo nelle sostituzioni " oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">10. Switch e Cambio Modulo nelle sostituzioni </div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="11">
+                    <div class="option-row">
+                        <input type="radio" name="q_11" value="Conferma Regola Precedente">
+                        <span class="option-label"><span class="opt-text">Conferma Regola Precedente</span></span>
+                        <input type="text" class="admin-opt-input" value="Conferma Regola Precedente" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_11" value="Modifica regola precedente">
+            <span class="option-label"><span class="opt-text">Modifica regola precedente</span></span>
+            <input type="text" class="admin-opt-input" value="Modifica regola precedente" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="11. Bonus &quot;Player of the Match&quot; (Uomo partita)" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">11. Bonus "Player of the Match" (Uomo partita)</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="La regola lo scorso anno prevedeva un bonus di 0,5 a chi avesse ricevuto il premio di player of the Match">
+            <div class="question-desc user-view-desc" style="display: block;">La regola lo scorso anno prevedeva un bonus di 0,5 a chi avesse ricevuto il premio di player of the Match</div>
+        
+                <div class="options-container" data-qid="12">
+                    <div class="option-row">
+                        <input type="radio" name="q_12" value="Conferma Regola Precedente">
+                        <span class="option-label"><span class="opt-text">Conferma Regola Precedente</span></span>
+                        <input type="text" class="admin-opt-input" value="Conferma Regola Precedente" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_12" value="Modifica regola precedente">
+            <span class="option-label"><span class="opt-text">Modifica regola precedente</span></span>
+            <input type="text" class="admin-opt-input" value="Modifica regola precedente" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="12. Bonus gol Vittoria" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">12. Bonus gol Vittoria</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="La regola lo scorso anno prevedeva un bonus di 0,5 a chi avesse segnato il gol vittoria del proprio team">
+            <div class="question-desc user-view-desc" style="display: block;">La regola lo scorso anno prevedeva un bonus di 0,5 a chi avesse segnato il gol vittoria del proprio team</div>
+        
+                <div class="options-container" data-qid="13">
+                    <div class="option-row">
+                        <input type="radio" name="q_13" value="Conferma Regola Precedente">
+                        <span class="option-label"><span class="opt-text">Conferma Regola Precedente</span></span>
+                        <input type="text" class="admin-opt-input" value="Conferma Regola Precedente" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_13" value="Modifica regola precedente">
+            <span class="option-label"><span class="opt-text">Modifica regola precedente</span></span>
+            <input type="text" class="admin-opt-input" value="Modifica regola precedente" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="13. Svincolo " oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">13. Svincolo </div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="14">
+                    <div class="option-row">
+                        <input type="radio" name="q_14" value="quota ripresa: 50% base, infortunio per più della metà di giornate rimaste 100%">
+                        <span class="option-label"><span class="opt-text">quota ripresa: 50% base, infortunio per più della metà di giornate rimaste 100%</span></span>
+                        <input type="text" class="admin-opt-input" value="quota ripresa: 50% base, infortunio per più della metà di giornate rimaste 100%" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_14" value="Parliamone">
+            <span class="option-label"><span class="opt-text">Parliamone</span></span>
+            <input type="text" class="admin-opt-input" value="Parliamone" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="14. Mercato" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">14. Mercato</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="15">
+                    <div class="option-row">
+                        <input type="radio" name="q_15" value="aperto solo a chiusura seconda finestra (valutare quanto aggiungere di budget), da chiusura seconda finestra o sempre aperto con limitazioni su acquisti">
+                        <span class="option-label"><span class="opt-text">aperto solo a chiusura seconda finestra (valutare quanto aggiungere di budget), da chiusura seconda finestra o sempre aperto con limitazioni su acquisti</span></span>
+                        <input type="text" class="admin-opt-input" value="aperto solo a chiusura seconda finestra (valutare quanto aggiungere di budget), da chiusura seconda finestra o sempre aperto con limitazioni su acquisti" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_15" value="Parliamone">
+            <span class="option-label"><span class="opt-text">Parliamone</span></span>
+            <input type="text" class="admin-opt-input" value="Parliamone" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="15. Partite rinviate" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">15. Partite rinviate</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="16">
+                    <div class="option-row">
+                        <input type="radio" name="q_16" value="solo 3+ si aspetta, con la possibilità di aspettare se si recuperano molto velocementesolo 3+ si aspetta, con la possibilità di aspettare se si recuperano molto velocemente">
+                        <span class="option-label"><span class="opt-text">solo 3+ si aspetta, con la possibilità di aspettare se si recuperano molto velocementesolo 3+ si aspetta, con la possibilità di aspettare se si recuperano molto velocemente</span></span>
+                        <input type="text" class="admin-opt-input" value="solo 3+ si aspetta, con la possibilità di aspettare se si recuperano molto velocementesolo 3+ si aspetta, con la possibilità di aspettare se si recuperano molto velocemente" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_16" value="Parliamone">
+            <span class="option-label"><span class="opt-text">Parliamone</span></span>
+            <input type="text" class="admin-opt-input" value="Parliamone" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="16. Riconferma prossimo anno" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">16. Riconferma prossimo anno</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="17">
+                    <div class="option-row">
+                        <input type="radio" name="q_17" value="1 giocatore &lt;= 15 crediti, dif o cen">
+                        <span class="option-label"><span class="opt-text">1 giocatore &lt;= 15 crediti, dif o cen</span></span>
+                        <input type="text" class="admin-opt-input" value="1 giocatore &lt;= 15 crediti, dif o cen" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_17" value="Parliamone">
+            <span class="option-label"><span class="opt-text">Parliamone</span></span>
+            <input type="text" class="admin-opt-input" value="Parliamone" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="17. Inizio Chiamata Asta" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">17. Inizio Chiamata Asta</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="18">
+                    <div class="option-row">
+                        <input type="radio" name="q_18" value="A sorte">
+                        <span class="option-label"><span class="opt-text">A sorte</span></span>
+                        <input type="text" class="admin-opt-input" value="A sorte" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_18" value="1 Classificato scorso campionato">
+            <span class="option-label"><span class="opt-text">1 Classificato scorso campionato</span></span>
+            <input type="text" class="admin-opt-input" value="1 Classificato scorso campionato" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div><div class="option-row">
+            <input type="radio" name="q_18" value="Ultimo classificato scorso campionato ">
+            <span class="option-label"><span class="opt-text">Ultimo classificato scorso campionato </span></span>
+            <input type="text" class="admin-opt-input" value="Ultimo classificato scorso campionato " oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div></div>
+        <div class="section-block">
+            <div class="section-title-bar">
+                <span class="user-section-title">Sezione 2: Nuove Proposte (Se interessano verranno affrontate e votate in sede d'Asta) </span>
+                <input type="text" class="admin-section-edit" value="Sezione 2: Nuove Proposte (Se interessano verranno affrontate e votate in sede d'Asta) " oninput="syncSectionTitle(this)">
+            </div>
+        <div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="1. Soglie gol" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">1. Soglie gol</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="Cambiare il valore della soglia per fare un gol">
+            <div class="question-desc user-view-desc" style="display: block;">Cambiare il valore della soglia per fare un gol</div>
+        
+                <div class="options-container" data-qid="19">
+                    <div class="option-row">
+                        <input type="radio" name="q_19" value="Parliamone">
+                        <span class="option-label"><span class="opt-text">Parliamone</span></span>
+                        <input type="text" class="admin-opt-input" value="Parliamone" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_19" value="Non mi interessa">
+            <span class="option-label"><span class="opt-text">Non mi interessa</span></span>
+            <input type="text" class="admin-opt-input" value="Non mi interessa" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="2. Gestione Formazione non inserita" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">2. Gestione Formazione non inserita</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="20">
+                    <div class="option-row">
+                        <input type="radio" name="q_20" value="Parliamone">
+                        <span class="option-label"><span class="opt-text">Parliamone</span></span>
+                        <input type="text" class="admin-opt-input" value="Parliamone" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_20" value="Facciamo come scorso anno">
+            <span class="option-label"><span class="opt-text">Facciamo come scorso anno</span></span>
+            <input type="text" class="admin-opt-input" value="Facciamo come scorso anno" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="3. Notifiche e sanzioni per mancato inserimento formazioni " oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">3. Notifiche e sanzioni per mancato inserimento formazioni </div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="21">
+                    <div class="option-row">
+                        <input type="radio" name="q_21" value="Parliamone  ">
+                        <span class="option-label"><span class="opt-text">Parliamone  </span></span>
+                        <input type="text" class="admin-opt-input" value="Parliamone  " oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_21" value="Non mi interessa">
+            <span class="option-label"><span class="opt-text">Non mi interessa</span></span>
+            <input type="text" class="admin-opt-input" value="Non mi interessa" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="4.  Modificatore Modulo (Bonus/Malus a seconda della formazione schierata)" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">4.  Modificatore Modulo (Bonus/Malus a seconda della formazione schierata)</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="22">
+                    <div class="option-row">
+                        <input type="radio" name="q_22" value="Parliamone ">
+                        <span class="option-label"><span class="opt-text">Parliamone </span></span>
+                        <input type="text" class="admin-opt-input" value="Parliamone " oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_22" value="Non mi interessa">
+            <span class="option-label"><span class="opt-text">Non mi interessa</span></span>
+            <input type="text" class="admin-opt-input" value="Non mi interessa" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="5. Rendimento (Bonus/Malus in base ai giocatori che ottengono almeno la sufficienza)" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">5. Rendimento (Bonus/Malus in base ai giocatori che ottengono almeno la sufficienza)</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="23">
+                    <div class="option-row">
+                        <input type="radio" name="q_23" value="Parliamone">
+                        <span class="option-label"><span class="opt-text">Parliamone</span></span>
+                        <input type="text" class="admin-opt-input" value="Parliamone" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_23" value="Non mi interessa">
+            <span class="option-label"><span class="opt-text">Non mi interessa</span></span>
+            <input type="text" class="admin-opt-input" value="Non mi interessa" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="6. FairPlay (Bonus/Malus se i giocatori non prendono cartellini o meno)" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">6. FairPlay (Bonus/Malus se i giocatori non prendono cartellini o meno)</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="24">
+                    <div class="option-row">
+                        <input type="radio" name="q_24" value="Parliamone">
+                        <span class="option-label"><span class="opt-text">Parliamone</span></span>
+                        <input type="text" class="admin-opt-input" value="Parliamone" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_24" value="Non mi interessa">
+            <span class="option-label"><span class="opt-text">Non mi interessa</span></span>
+            <input type="text" class="admin-opt-input" value="Non mi interessa" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="7. Modificatori di ruolo avanzati" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">7. Modificatori di ruolo avanzati</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="25">
+                    <div class="option-row">
+                        <input type="radio" name="q_25" value="Parliamone">
+                        <span class="option-label"><span class="opt-text">Parliamone</span></span>
+                        <input type="text" class="admin-opt-input" value="Parliamone" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_25" value="Non mi interessa">
+            <span class="option-label"><span class="opt-text">Non mi interessa</span></span>
+            <input type="text" class="admin-opt-input" value="Non mi interessa" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="8. Fattore campo" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">8. Fattore campo</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="26">
+                    <div class="option-row">
+                        <input type="radio" name="q_26" value="Parliamone">
+                        <span class="option-label"><span class="opt-text">Parliamone</span></span>
+                        <input type="text" class="admin-opt-input" value="Parliamone" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_26" value="Non mi interessa">
+            <span class="option-label"><span class="opt-text">Non mi interessa</span></span>
+            <input type="text" class="admin-opt-input" value="Non mi interessa" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div><div class="question-card" data-q-type="radio">
+            <input type="text" class="admin-q-title-input" value="9. Autogol/ Limitatore Pareggi" oninput="syncQTitle(this)">
+            <div class="question-title user-view-title">9. Autogol/ Limitatore Pareggi</div>
+            <input type="text" class="admin-q-desc-input" placeholder="Aggiungi una descrizione..." oninput="syncQDesc(this)" value="">
+            <div class="question-desc user-view-desc" style="display:none;"></div>
+        
+                <div class="options-container" data-qid="27">
+                    <div class="option-row">
+                        <input type="radio" name="q_27" value="Parliamone">
+                        <span class="option-label"><span class="opt-text">Parliamone</span></span>
+                        <input type="text" class="admin-opt-input" value="Parliamone" oninput="syncOptTextAndValue(this)">
+                        <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+                    </div>
+                <div class="option-row">
+            <input type="radio" name="q_27" value="Non mi interessa">
+            <span class="option-label"><span class="opt-text">Non mi interessa</span></span>
+            <input type="text" class="admin-opt-input" value="Non mi interessa" oninput="syncOptTextAndValue(this)">
+            <button type="button" class="btn-delete-opt" onclick="deleteOption(this)">X</button>
+        </div></div>
+                <button type="button" class="btn-add-opt" onclick="addOption(this)">+ Aggiungi opzione</button>
+            
+            <div class="admin-card-controls">
+                <div class="admin-card-controls-left">
+                    <label><input type="checkbox" class="chk-required" checked="checked" onchange="toggleRequired(this)"> Obbligatoria</label>
+                </div>
+                <button type="button" class="btn-delete-q" onclick="deleteCard(this)">Elimina domanda</button>
+            </div>
+        </div></div></div>
         <div class="global-admin-actions">
             <button type="button" class="btn-add-section" onclick="addSection()">+ Aggiungi Sezione</button>
             <button type="button" class="btn-add-question" onclick="addQuestionGlobal('radio')">+ Domanda a Scelta</button>
@@ -503,10 +1230,8 @@
     <div class="admin-responses-panel">
         <h2>📊 Risposte Raccolte dai Partecipanti</h2>
         <p>Qui sotto vedi lo storico delle compilazioni ricevute:</p>
-        <a class="sheet-link" id="sheetLink" href="#" target="_blank" rel="noopener">📄 Apri il Google Sheet completo</a>
-        <div id="responsesTableContainer">
-            <p>Caricamento risposte...</p>
-        </div>
+        <a class="sheet-link" id="sheetLink" href="https://docs.google.com/spreadsheets/d/1QcXY6Q0fY10eaInBHCqlAtRLWDZ6oxHIiYC58aowih8/edit?gid=0#gid=0" target="_blank" rel="noopener">📄 Apri il Google Sheet completo</a>
+        <div id="responsesTableContainer"><p>Caricamento risposte...</p></div>
         <p class="responses-note">Nota: "Cancella tutte le risposte" cancella solo la copia salvata in questo browser, non le righe già scritte sul Google Sheet (quelle vanno eliminate da lì).</p>
         <button type="button" class="btn-clear-data" onclick="clearResponses()">Cancella copia locale</button>
     </div>
@@ -556,7 +1281,24 @@
     function revealModeSwitcher() {
         document.getElementById('modeSwitcher').style.display = 'flex';
     }
+
+    // Garantisce che, indipendentemente da come è stato pubblicato il file,
+    // ogni domanda risulti correttamente abilitata e "obbligatoria" (in base
+    // al checkbox impostato in fase di creazione) per chi la compila davvero.
+    function applyParticipantDefaults() {
+        document.querySelectorAll('.question-card').forEach(card => {
+            const chk = card.querySelector('.chk-required');
+            const isReq = chk ? chk.checked : false;
+            card.querySelectorAll('.user-text-input, .options-container input[type="radio"], .options-container input[type="checkbox"]').forEach(inp => {
+                inp.removeAttribute('disabled');
+                if (isReq) inp.setAttribute('required', 'true');
+                else inp.removeAttribute('required');
+            });
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
+        applyParticipantDefaults();
         if (new URLSearchParams(location.search).get('admin') === '1') {
             revealModeSwitcher();
         }
@@ -924,5 +1666,6 @@
         }
     }
 </script>
-</body>
-</html>
+
+
+</body></html>
