@@ -288,6 +288,20 @@
         .btn-add-question {
             background: var(--primary);
         }
+        .btn-export {
+            background: #0d6efd;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .export-hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 8px;
+        }
         .submit-container {
             text-align: center;
             margin-top: 40px;
@@ -476,6 +490,10 @@
             <button type="button" class="btn-add-section" onclick="addSection()">+ Aggiungi Sezione</button>
             <button type="button" class="btn-add-question" onclick="addQuestionGlobal('radio')">+ Domanda a Scelta</button>
             <button type="button" class="btn-add-question" onclick="addQuestionGlobal('text')" style="background:#52b788;">+ Domanda Testo</button>
+            <div style="margin-top:15px;">
+                <button type="button" class="btn-export" onclick="exportUpdatedForm()">💾 Scarica il modulo aggiornato da pubblicare</button>
+                <p class="export-hint">Scarica il file HTML con le tue modifiche e caricalo su GitHub al posto di quello attuale: solo così i tuoi amici vedranno le modifiche.</p>
+            </div>
         </div>
         <div class="submit-container">
             <button type="submit" class="main-submit" id="submitBtn">Invia le tue preferenze</button>
@@ -559,6 +577,59 @@
         } else {
             alert('Password errata.');
         }
+    }
+
+    // Scarica un file HTML con tutte le modifiche fatte in modalità Admin
+    // (titolo, sezioni, domande, opzioni), pronto da ricaricare su GitHub.
+    function exportUpdatedForm() {
+        const clone = document.documentElement.cloneNode(true);
+
+        // Gli input in questa pagina hanno il valore "digitato" salvato solo come
+        // proprietà JS, non come attributo HTML: cloneNode copia gli attributi,
+        // quindi qui trasferiamo manualmente i valori attuali sul clone, altrimenti
+        // il file scaricato conterrebbe ancora i testi originali/di esempio.
+        const liveInputs = document.querySelectorAll('input');
+        const cloneInputs = clone.querySelectorAll('input');
+        liveInputs.forEach((liveEl, i) => {
+            const cloneEl = cloneInputs[i];
+            if (!cloneEl) return;
+            if (liveEl.type === 'checkbox' || liveEl.type === 'radio') {
+                if (liveEl.checked) cloneEl.setAttribute('checked', 'checked');
+                else cloneEl.removeAttribute('checked');
+            } else {
+                cloneEl.setAttribute('value', liveEl.value);
+            }
+        });
+
+        // Le opzioni a scelta sono disabilitate mentre sei in modalità Admin
+        // (per non interferire con la modifica): nel file esportato devono invece
+        // essere sempre cliccabili e senza nulla di pre-selezionato.
+        clone.querySelectorAll('.options-container input[type="radio"], .options-container input[type="checkbox"]').forEach(el => {
+            el.removeAttribute('disabled');
+            el.removeAttribute('checked');
+        });
+
+        // Svuota eventuali risposte di prova digitate durante l'anteprima admin
+        clone.querySelectorAll('.user-text-input').forEach(el => el.removeAttribute('value'));
+
+        // Il file scaricato deve aprirsi sempre in vista Partecipante, mai in Admin
+        clone.querySelector('body').classList.remove('admin-mode');
+        const modeSwitcherClone = clone.querySelector('#modeSwitcher');
+        if (modeSwitcherClone) modeSwitcherClone.setAttribute('style', 'display:none;');
+        const responsesContainerClone = clone.querySelector('#responsesTableContainer');
+        if (responsesContainerClone) responsesContainerClone.innerHTML = '<p>Caricamento risposte...</p>';
+
+        const htmlStr = '<!DOCTYPE html>\n' + clone.outerHTML;
+        const blob = new Blob([htmlStr], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'sondaggio-fantacalcio.html';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        alert('File scaricato! Ora caricalo su GitHub al posto di quello attuale (stesso nome file) e ripubblica: solo a quel punto i tuoi amici vedranno le modifiche.');
     }
 
     function syncHeader() {
