@@ -1243,7 +1243,7 @@
 
     // URL della web app di Google Apps Script (vedi ISTRUZIONI.md). Le risposte
     // dei tuoi amici vengono inviate qui.
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz21UNsbpOgNFQgzzbZ667zGK5YcWPodw_BTe-b-dqkJ6bIQ4ebtEiYkjHptLI_41wx/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-ie--40DRdWqKxHfPRNZrETaoRWlXKG7JSF6FiK6yyarYJINHQzHpN_Eb9wiQg7yf/exec";
 
     // Deve combaciare ESATTAMENTE con la costante API_TOKEN dentro Code.gs.
     // Serve per autenticare la lettura delle risposte nel pannello Admin.
@@ -1252,13 +1252,14 @@
     // Link al Google Sheet dove arrivano le risposte (per aprirlo dal pannello Admin).
     const GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/1QcXY6Q0fY10eaInBHCqlAtRLWDZ6oxHIiYC58aowih8/edit?gid=0#gid=0";
 
-    // Hash SHA-256 della password admin. La password di default è "CambiaMi2026!".
-    // CAMBIALA prima di pubblicare: apri la console del browser (F12) su questa
-    // pagina e incolla, sostituendo LA_TUA_NUOVA_PASSWORD:
+    // Hash SHA-256 della password admin (qui sotto non compare mai la password
+    // in chiaro, solo il suo hash). Per cambiarla di nuovo in futuro: apri la
+    // console del browser (F12) su questa pagina e incolla, sostituendo
+    // LA_TUA_NUOVA_PASSWORD:
     //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('LA_TUA_NUOVA_PASSWORD'))
     //     .then(b => console.log(Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2,'0')).join('')))
     // e copia il risultato qui sotto.
-    const ADMIN_PASSWORD_HASH = "b5d51e7146a70551ecf4a78caba101b5b2ebf08a80634351984d8363ed7de140";
+    const ADMIN_PASSWORD_HASH = "9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0";
 
     /* ===================================================================== */
 
